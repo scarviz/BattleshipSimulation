@@ -8,6 +8,7 @@ public class Shot : MonoBehaviour {
 	public Transform m_cannonRot;
 	public Transform m_muzzle;
 	public GameObject m_shotPrefab;
+	public GameObject m_enemy;
 
 	private class Message
 	{
@@ -55,7 +56,11 @@ public class Shot : MonoBehaviour {
 			switch (mes.intent)
 			{
 				case MessType.SHOT:
-					shot();
+					Invoke("Crash", 0.5f);
+					for (var cnt = 0; cnt < 5; cnt++)
+					{
+						ShotBeam();
+					}
 					break;
 				default:
 					break;
@@ -64,9 +69,14 @@ public class Shot : MonoBehaviour {
 		}
 	}
 
-	private void shot()
+	private void ShotBeam()
 	{
 		GameObject go = GameObject.Instantiate(m_shotPrefab, m_muzzle.position, m_muzzle.rotation) as GameObject;
 		GameObject.Destroy(go, 3f);
+	}
+
+	private void Crash()
+	{
+		m_enemy.GetComponent<ExploderEx>().Crash();
 	}
 }
